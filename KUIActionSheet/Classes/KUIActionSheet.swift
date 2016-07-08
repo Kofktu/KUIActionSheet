@@ -54,14 +54,14 @@ public struct KUIActionSheetItemDefaultTheme: KUIActionSheetItemTheme {
 }
 
 public struct KUIActionSheetItem {
-    var title: String
-    var destructive: Bool
-    var handler: ((Void) -> Void)?
+    public var title: String
+    public var destructive: Bool
+    public var handler: ((Void) -> Void)?
 }
 
 public protocol KUIActionSheetItemViewProtocol {}
 extension KUIActionSheetItemViewProtocol where Self: UIView {
-    var actionSheet: KUIActionSheet? {
+    public var actionSheet: KUIActionSheet? {
         var responder: UIResponder? = self
         while responder != nil {
             if let sheet = responder as? KUIActionSheet {
@@ -75,11 +75,11 @@ extension KUIActionSheetItemViewProtocol where Self: UIView {
 
 public class KUIActionSheet: UIView {
 
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var cancelButtonBottom: NSLayoutConstraint!
-    
+    @IBOutlet public weak var containerView: UIView!
+    @IBOutlet public weak var cancelButton: UIButton!
+    @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
     public var theme: KUIActionSheetProtocol!
+    
     private var showing: Bool = false
     private var parentViewController: UIViewController!
     private var lastViewBottom: NSLayoutConstraint?
