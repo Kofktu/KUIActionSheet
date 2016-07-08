@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/Kofktu/KUIActionSheet.git", :commit => "b8766a3a8d7bbe85a1ab8497f9fd2931b4efeb9c" }
+  s.source       = { :git => "https://github.com/Kofktu/KUIActionSheet.git", :tag => s.version.to_s }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
