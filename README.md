@@ -16,6 +16,50 @@ it, simply add the following line to your Podfile:
 pod "KUIActionSheet"
 ```
 
+## Usage
+
+#### KUIActionSheet
+```Swift 
+import KUIActionSheet
+
+let actionSheet = KUIActionSheet.view(parentViewController: self)
+
+actionSheet?.add(customView: UIView<KUIActionSheetItemViewProtocol>)
+actionSheet?.add(item: KUIActionSheetItem(title: "Menu1", destructive: false) { [weak self] (item) in
+  print(item.title)
+})
+actionSheet?.show()
+
+```
+
+#### CustomView
+```Swift 
+class CustomView: UIView, KUIActionSheetItemViewProtocol {
+    
+    func ... () {
+      actionSheet?.dismiss()
+    }
+}
+
+```
+
+#### CustomTheme
+```Swift 
+public protocol KUIActionSheetProtocol {
+    var animationDuration: NSTimeInterval { get }
+    var blurEffectStyle: UIBlurEffectStyle { get }
+    var itemTheme: KUIActionSheetItemTheme { get }
+}
+
+public protocol KUIActionSheetItemTheme {
+    var height: CGFloat { get }
+    var font: UIFont { get }
+    var titleColor: UIColor { get }
+    var destructiveTitleColor: UIColor { get }
+}
+
+```
+
 ## Authors
 
 Taeun Kim (kofktu), <kofktu@gmail.com>
