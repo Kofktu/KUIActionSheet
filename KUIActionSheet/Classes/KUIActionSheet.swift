@@ -54,9 +54,9 @@ public struct KUIActionSheetItemDefaultTheme: KUIActionSheetItemTheme {
 }
 
 public struct KUIActionSheetItem {
-    public var title: String
-    public var destructive: Bool
-    public var handler: ((Void) -> Void)?
+    public let title: String
+    public let destructive: Bool
+    public let handler: ((Void) -> Void)?
 }
 
 public protocol KUIActionSheetItemViewProtocol {}
