@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes/**/*.{swift}"
+  s.source_files  = "KUIActionSheet/Classes/**/*.{swift}"
   # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -104,7 +104,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "Assets/*.{png,xib}"
+  s.resources = "KUIActionSheet/Assets/*.{png,xib}"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
