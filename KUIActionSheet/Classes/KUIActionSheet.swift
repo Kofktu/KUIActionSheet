@@ -88,6 +88,7 @@ public class KUIActionSheet: UIView {
     @IBOutlet public weak var cancelButton: UIButton!
     @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
     public var theme: KUIActionSheetProtocol!
+    public var tapToDismiss: Bool = true
     
     private var showing: Bool = false
     private var parentViewController: UIViewController!
@@ -110,6 +111,15 @@ public class KUIActionSheet: UIView {
         
         containerView.layer.cornerRadius = 8.0
         cancelButton.layer.cornerRadius = 8.0
+    }
+    
+    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesEnded(touches, withEvent: event)
+        guard let location = touches.first?.locationInView(self) where tapToDismiss else { return }
+        
+        if location.y < CGRectGetMinY(containerView.frame) {
+            dismiss()
+        }
     }
     
     public func show(completion: ((Bool) -> Void)? = nil) {
