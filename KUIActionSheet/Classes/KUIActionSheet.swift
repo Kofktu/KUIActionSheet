@@ -56,7 +56,16 @@ public struct KUIActionSheetItemDefaultTheme: KUIActionSheetItemTheme {
 public struct KUIActionSheetItem {
     public let title: String
     public let destructive: Bool
-    public let handler: ((Void) -> Void)?
+    public let handler: ((KUIActionSheetItem) -> Void)?
+    
+    public init(
+        title: String,
+        destructive: Bool = false,
+        handler: ((KUIActionSheetItem) -> Void)?) {
+        self.title = title
+        self.destructive = destructive
+        self.handler = handler
+    }
 }
 
 public protocol KUIActionSheetItemViewProtocol {}
@@ -217,7 +226,7 @@ private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol
     }
     
     @objc func onPressed(sender: UIButton) {
-        item.handler?()
+        item.handler?(item)
         actionSheet?.dismiss()
     }
 }
