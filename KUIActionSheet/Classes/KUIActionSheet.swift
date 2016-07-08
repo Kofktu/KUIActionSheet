@@ -76,7 +76,7 @@ extension KUIActionSheetItemViewProtocol where Self: UIView {
 public class KUIActionSheet: UIView {
 
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var cancelButton: UIView!
+    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var cancelButtonBottom: NSLayoutConstraint!
     
     public var theme: KUIActionSheetProtocol!
