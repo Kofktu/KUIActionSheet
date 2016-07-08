@@ -1,7 +1,7 @@
 # KUIActionSheet
 > Custom UIActionSheet for Swift
 
-![alt tag](https://github.com/Kofktu/KUIActionSheet/Screenshot/sample1.png)
+![alt tag](Screenshot/sample1.png)
 
 ## Example
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
