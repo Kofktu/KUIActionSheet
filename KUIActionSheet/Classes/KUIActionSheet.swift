@@ -9,12 +9,17 @@
 import UIKit
 
 public protocol KUIActionSheetProtocol {
+    var backgroundColor: UIColor { get }
     var animationDuration: NSTimeInterval { get }
     var blurEffectStyle: UIBlurEffectStyle { get }
     var itemTheme: KUIActionSheetItemTheme { get }
 }
 
 public struct KUIActionSheetDefault: KUIActionSheetProtocol {
+    public var backgroundColor: UIColor {
+        return UIColor(white: 0.0, alpha: 0.4)
+    }
+    
     public var animationDuration: NSTimeInterval {
         return 0.25
     }
@@ -89,9 +94,9 @@ public class KUIActionSheet: UIView {
     @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
     public var theme: KUIActionSheetProtocol!
     public var tapToDismiss: Bool = true
+    private(set) var parentViewController: UIViewController!
     
     private var showing: Bool = false
-    private var parentViewController: UIViewController!
     private var lastViewBottom: NSLayoutConstraint?
     
     class public func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
@@ -129,6 +134,7 @@ public class KUIActionSheet: UIView {
         }
         
         showing = true
+        backgroundColor = theme.backgroundColor
         parentViewController.view.endEditing(true)
         
         translatesAutoresizingMaskIntoConstraints = false
@@ -157,7 +163,7 @@ public class KUIActionSheet: UIView {
         showing = false
         cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.view.frame)
         
-        UIView.animateWithDuration(0.15, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(theme.animationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
             self.layoutIfNeeded()
         }) { (finished) in
             completion?(true)
@@ -166,6 +172,14 @@ public class KUIActionSheet: UIView {
     }
     
     public func add(customView view: UIView?) {
+        if view?.translatesAutoresizingMaskIntoConstraints ?? false {
+            view?.translatesAutoresizingMaskIntoConstraints = false
+            
+            if let view = view {
+                view.addConstraint(NSLayoutConstraint(item: view, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: CGRectGetHeight(view.frame)))
+            }
+        }
+        
         add(view: view)
     }
     
