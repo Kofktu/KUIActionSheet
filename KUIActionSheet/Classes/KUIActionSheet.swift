@@ -127,24 +127,26 @@ public class KUIActionSheet: UIView {
         }
     }
     
-    public func show(completion: ((Bool) -> Void)? = nil) {
+    public func show(viewController: UIViewController? = nil, completion: ((Bool) -> Void)? = nil) {
         guard !showing else {
             completion?(false)
             return
         }
         
+        let targetViewController: UIViewController = viewController ?? parentViewController
+        
         showing = true
         backgroundColor = theme.backgroundColor
-        parentViewController.view.endEditing(true)
+        targetViewController.view.endEditing(true)
         
         translatesAutoresizingMaskIntoConstraints = false
-        parentViewController.view.addSubview(self)
-        parentViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
-        parentViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addSubview(self)
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
         
         let initialBottomSpace = cancelButtonBottom.constant
         
-        cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.view.frame)
+        cancelButtonBottom.constant = -CGRectGetHeight(targetViewController.view.frame)
         layoutIfNeeded()
         
         cancelButtonBottom.constant = initialBottomSpace
