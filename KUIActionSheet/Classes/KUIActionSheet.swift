@@ -10,7 +10,8 @@ import UIKit
 
 public protocol KUIActionSheetProtocol {
     var backgroundColor: UIColor { get }
-    var animationDuration: NSTimeInterval { get }
+    var showAnimationDuration: NSTimeInterval { get }
+    var dimissAnimationDuration: NSTimeInterval { get }
     var blurEffectStyle: UIBlurEffectStyle { get }
     var itemTheme: KUIActionSheetItemTheme { get }
 }
@@ -20,8 +21,12 @@ public struct KUIActionSheetDefault: KUIActionSheetProtocol {
         return UIColor(white: 0.0, alpha: 0.4)
     }
     
-    public var animationDuration: NSTimeInterval {
+    public var showAnimationDuration: NSTimeInterval {
         return 0.25
+    }
+    
+    public var dimissAnimationDuration: NSTimeInterval {
+        return 0.15
     }
     
     public var blurEffectStyle: UIBlurEffectStyle {
@@ -151,7 +156,7 @@ public class KUIActionSheet: UIView {
         
         cancelButtonBottom.constant = initialBottomSpace
         
-        UIView.animateWithDuration(theme.animationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: { 
+        UIView.animateWithDuration(theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
             self.layoutIfNeeded()
         }, completion: completion)
     }
@@ -165,7 +170,8 @@ public class KUIActionSheet: UIView {
         showing = false
         cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.view.frame)
         
-        UIView.animateWithDuration(theme.animationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+        UIView.animateWithDuration(theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+            self.backgroundColor = self.theme.backgroundColor.colorWithAlphaComponent(0.0)
             self.layoutIfNeeded()
         }) { (finished) in
             completion?(true)
