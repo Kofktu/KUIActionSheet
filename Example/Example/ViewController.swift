@@ -12,7 +12,8 @@ import KUIActionSheet
 class ViewController: UIViewController {
 
     @IBAction func onPressed(sender: UIButton) {
-        let actionSheet = KUIActionSheet.view(parentViewController: self)
+        let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
+//        let actionSheet = KUIActionSheet.view(parentViewController: self)
         
         // for darkTheme example
 //        let actionSheet = KUIActionSheet.view(parentViewController: self, theme: KUIActionSheetDark())
@@ -43,8 +44,12 @@ public struct KUIActionSheetDark: KUIActionSheetProtocol {
         return UIColor(white: 0.0, alpha: 0.4)
     }
     
-    public var animationDuration: NSTimeInterval {
+    public var showAnimationDuration: NSTimeInterval {
         return 0.25
+    }
+    
+    public var dimissAnimationDuration: NSTimeInterval {
+        return 0.15
     }
     
     public var blurEffectStyle: UIBlurEffectStyle {
@@ -82,3 +87,10 @@ class HeaderView: UIView, KUIActionSheetItemViewProtocol {
     }
 }
 
+class CustomActionSheet: KUIActionSheet, KUIActionSheetNibLoadableView {
+    
+    class func actionSheet(parentViewController viewController: UIViewController) -> CustomActionSheet? {
+        return CustomActionSheet.viewWithNib(parentViewController: viewController) as? CustomActionSheet
+    }
+    
+}
