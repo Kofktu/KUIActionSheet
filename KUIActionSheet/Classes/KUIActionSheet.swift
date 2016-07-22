@@ -102,7 +102,11 @@ extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
     }
     
     public static func viewWithNib(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
-        let views = NSBundle(forClass: self).loadNibNamed(nibName, owner: nil, options: nil)
+        return viewWithNibName(nibFileName: nibName, parentViewController: viewController, theme: theme)
+    }
+    
+    public static func viewWithNibName(nibFileName nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
+        let views = NSBundle(forClass: self).loadNibNamed(nibFileName, owner: nil, options: nil)
         for view in views {
             if let view = view as? Self {
                 view.theme = theme
@@ -121,7 +125,7 @@ public class KUIActionSheet: UIView {
     @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
     public var theme: KUIActionSheetProtocol!
     public var tapToDismiss: Bool = true
-    public internal(set) var parentViewController: UIViewController!
+    public private(set) var parentViewController: UIViewController!
     
     private var showing: Bool = false
     private var lastViewBottom: NSLayoutConstraint?

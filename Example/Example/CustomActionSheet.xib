@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="xfO-XN-9w7" customClass="CustomActionSheet" customModule="Example" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Szm-jQ-wdP">
+                    <rect key="frame" x="10" y="534" width="580" height="57"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="57" id="ZNd-yd-6Au"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <state key="normal" title="취소(Custom)"/>
+                    <connections>
+                        <action selector="onClose:" destination="xfO-XN-9w7" eventType="touchUpInside" id="tE1-Kx-pfX"/>
+                    </connections>
+                </button>
+                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iI6-sl-5sI">
+                    <rect key="frame" x="10" y="526" width="580" height="0.0"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Szm-jQ-wdP" firstAttribute="leading" secondItem="xfO-XN-9w7" secondAttribute="leading" constant="10" id="2yi-5X-lWY"/>
+                <constraint firstItem="iI6-sl-5sI" firstAttribute="centerX" secondItem="Szm-jQ-wdP" secondAttribute="centerX" id="3CF-3s-Nrc"/>
+                <constraint firstItem="Szm-jQ-wdP" firstAttribute="top" secondItem="iI6-sl-5sI" secondAttribute="bottom" constant="8" id="4ot-dJ-b7v"/>
+                <constraint firstAttribute="trailing" secondItem="Szm-jQ-wdP" secondAttribute="trailing" constant="10" id="N8K-WO-Sk4"/>
+                <constraint firstItem="iI6-sl-5sI" firstAttribute="width" secondItem="Szm-jQ-wdP" secondAttribute="width" id="UjZ-A8-wgO"/>
+                <constraint firstAttribute="bottom" secondItem="Szm-jQ-wdP" secondAttribute="bottom" constant="9" id="sMl-al-bDY"/>
+            </constraints>
+            <connections>
+                <outlet property="cancelButton" destination="Szm-jQ-wdP" id="K8a-0L-xrm"/>
+                <outlet property="cancelButtonBottom" destination="sMl-al-bDY" id="slb-vG-e95"/>
+                <outlet property="containerView" destination="iI6-sl-5sI" id="SNc-qc-Inn"/>
+            </connections>
+        </view>
+    </objects>
+</document>
