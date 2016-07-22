@@ -6,8 +6,9 @@ target 'Example' do
   use_frameworks!
 
   # Pods for Example
-  pod 'KUIActionSheet'
-  
+  # pod 'KUIActionSheet'
+  pod 'KUIActionSheet', :git => 'https://github.com/Kofktu/KUIActionSheet.git', :commit => '55602e2977b5a1a513749f17a141d04090268f92'
+
   target 'ExampleTests' do
     inherit! :search_paths
     # Pods for testing

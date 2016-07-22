@@ -94,6 +94,11 @@ extension KUIActionSheetItemViewProtocol where Self: UIView {
 
 public protocol KUIActionSheetNibLoadableView: class {
     static var nibName: String { get }
+    
+    func show(viewController: UIViewController?, completion: ((Bool) -> Void)?)
+    func dismiss(completion: ((Bool) -> Void)?)
+    func add(customView view: UIView?)
+    func add(item item: KUIActionSheetItem)
 }
 
 extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {

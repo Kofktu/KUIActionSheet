@@ -12,7 +12,8 @@ import KUIActionSheet
 class ViewController: UIViewController {
 
     @IBAction func onPressed(sender: UIButton) {
-        let actionSheet = KUIActionSheet.view(parentViewController: self)
+        let actionSheet = CustomActionSheet.viewWithNib(parentViewController: self)
+//        let actionSheet = KUIActionSheet.view(parentViewController: self)
         
         // for darkTheme example
 //        let actionSheet = KUIActionSheet.view(parentViewController: self, theme: KUIActionSheetDark())
@@ -82,3 +83,5 @@ class HeaderView: UIView, KUIActionSheetItemViewProtocol {
     }
 }
 
+class CustomActionSheet: KUIActionSheet, KUIActionSheetNibLoadableView {
+}
