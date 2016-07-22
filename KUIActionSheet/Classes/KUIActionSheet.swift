@@ -99,7 +99,7 @@ public class KUIActionSheet: UIView {
     @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
     public var theme: KUIActionSheetProtocol!
     public var tapToDismiss: Bool = true
-    public private(set) var parentViewController: UIViewController!
+    public internal(set) var parentViewController: UIViewController!
     
     private var showing: Bool = false
     private var lastViewBottom: NSLayoutConstraint?
