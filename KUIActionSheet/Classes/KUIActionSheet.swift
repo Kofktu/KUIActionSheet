@@ -92,6 +92,28 @@ extension KUIActionSheetItemViewProtocol where Self: UIView {
     }
 }
 
+public protocol KUIActionSheetNibLoadableView: class {
+    static var nibName: String { get }
+}
+
+extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
+    public static var nibName: String {
+        return NSStringFromClass(self).componentsSeparatedByString(".").last!
+    }
+    
+    public static func viewWithNib(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
+        let views = NSBundle(forClass: self).loadNibNamed(nibName, owner: nil, options: nil)
+        for view in views {
+            if let view = view as? Self {
+                view.theme = theme
+                view.parentViewController = viewController
+                return view
+            }
+        }
+        return nil
+    }
+}
+
 public class KUIActionSheet: UIView {
 
     @IBOutlet public weak var containerView: UIView!
@@ -104,7 +126,7 @@ public class KUIActionSheet: UIView {
     private var showing: Bool = false
     private var lastViewBottom: NSLayoutConstraint?
     
-    class public func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
+    public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
         let views = NSBundle(forClass: self).loadNibNamed("KUIActionSheet", owner: nil, options: nil)
         for view in views {
             if let view = view as? KUIActionSheet {
