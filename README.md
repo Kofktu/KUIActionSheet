@@ -50,7 +50,8 @@ class CustomView: UIView, KUIActionSheetItemViewProtocol {
 ```Swift 
 public protocol KUIActionSheetProtocol {
     var backgroundColor: UIColor { get }
-    var animationDuration: NSTimeInterval { get }
+    var showAnimationDuration: NSTimeInterval { get }
+    var dimissAnimationDuration: NSTimeInterval { get }
     var blurEffectStyle: UIBlurEffectStyle { get }
     var itemTheme: KUIActionSheetItemTheme { get }
 }
