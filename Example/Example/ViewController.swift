@@ -11,20 +11,9 @@ import KUIActionSheet
 
 class ViewController: UIViewController {
 
-    @IBAction func onPressed(sender: UIButton) {
-        let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
-//        let actionSheet = KUIActionSheet.view(parentViewController: self)
+    @IBAction func onShowDefaultActionSheet(sender: UIButton) {
+        let actionSheet = KUIActionSheet.view(parentViewController: self)
         
-        // for darkTheme example
-//        let actionSheet = KUIActionSheet.view(parentViewController: self, theme: KUIActionSheetDark())
-        
-        let headerView = HeaderView(frame: CGRectMake(0.0, 0.0, CGRectGetWidth(view.frame), 50.0))
-        headerView.backgroundColor = UIColor.redColor()
-        
-//        headerView.translatesAutoresizingMaskIntoConstraints = false
-//        headerView.addConstraint(NSLayoutConstraint(item: headerView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 50.0))
-        
-        actionSheet?.add(customView: headerView)
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
             print(item.title)
         })
@@ -34,9 +23,68 @@ class ViewController: UIViewController {
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
             print(item.title)
         })
+        
         actionSheet?.show()
     }
     
+    @IBAction func onShowDefaultActionSheetWithCustomView(sender: UIButton) {
+        let actionSheet = KUIActionSheet.view(parentViewController: self)
+        
+        let headerView = HeaderView(frame: CGRectMake(0.0, 0.0, CGRectGetWidth(view.frame), 100.0))
+        headerView.backgroundColor = UIColor.redColor()
+        
+//      with autolayout
+//      headerView.translatesAutoresizingMaskIntoConstraints = false
+//      headerView.addConstraint(NSLayoutConstraint(item: headerView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 50.0))
+        
+        actionSheet?.add(customView: headerView)
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+            print(item.title)
+            })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+            print(item.title)
+            })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+            print(item.title)
+            })
+        
+        actionSheet?.show()
+    }
+    
+    @IBAction func onShowCustomThemeActionSheet(sender: UIButton) {
+        let actionSheet = KUIActionSheet.view(parentViewController: self, theme: KUIActionSheetDark())
+        
+        actionSheet?.cancelButton.backgroundColor = UIColor.blackColor()
+        actionSheet?.cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        
+        actionSheet?.show()
+    }
+    
+    @IBAction func onShowCustomXibActionSheet(sender: UIButton) {
+        let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
+        
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+            print(item.title)
+        })
+        
+        actionSheet?.show()
+    }
 }
 
 public struct KUIActionSheetDark: KUIActionSheetProtocol {
@@ -63,7 +111,7 @@ public struct KUIActionSheetDark: KUIActionSheetProtocol {
 
 public struct KUIActionSheetItemDarkTheme: KUIActionSheetItemTheme {
     public var height: CGFloat {
-        return 57.0
+        return 50.0
     }
     
     public var font: UIFont {
@@ -71,7 +119,7 @@ public struct KUIActionSheetItemDarkTheme: KUIActionSheetItemTheme {
     }
     
     public var titleColor: UIColor {
-        return UIColor(red: 0/255.0, green: 118/255.0, blue: 255/255.0, alpha: 1.0)
+        return UIColor(white: 1.0, alpha: 0.7)
     }
     
     public var destructiveTitleColor: UIColor {
