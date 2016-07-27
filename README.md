@@ -1,7 +1,10 @@
 # KUIActionSheet
 > Custom UIActionSheet for Swift
 
-![alt tag](Screenshot/sample1.png)
+![alt tag](Screenshot/Default.png)
+![alt tag](Screenshot/DefaultWithCustomView.png)
+![alt tag](Screenshot/CustomTheme.png)
+![alt tag](Screenshot/CustomXib.png)
 
 ## Example
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
