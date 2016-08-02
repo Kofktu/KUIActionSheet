@@ -118,6 +118,18 @@ extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
     }
 }
 
+private extension UIViewController {
+    
+    var rootViewController: UIViewController {
+        var rootViewController: UIViewController = self
+        while let parentViewController = rootViewController.parentViewController {
+            rootViewController = parentViewController
+        }
+        return rootViewController
+    }
+    
+}
+
 public class KUIActionSheet: UIView {
 
     @IBOutlet public weak var containerView: UIView!
@@ -150,11 +162,15 @@ public class KUIActionSheet: UIView {
     }
     
     public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
-        guard let location = touches.first?.locationInView(self) where tapToDismiss else { return }
+        guard let location = touches.first?.locationInView(self) where tapToDismiss else {
+            super.touchesEnded(touches, withEvent: event)
+            return
+        }
         
         if location.y < CGRectGetMinY(containerView.frame) {
             dismiss()
+        } else {
+            super.touchesEnded(touches, withEvent: event)
         }
     }
     
@@ -164,7 +180,7 @@ public class KUIActionSheet: UIView {
             return
         }
         
-        let targetViewController: UIViewController = viewController ?? parentViewController
+        let targetViewController: UIViewController = viewController ?? parentViewController.rootViewController
         
         showing = true
         backgroundColor = theme.backgroundColor
@@ -194,7 +210,7 @@ public class KUIActionSheet: UIView {
         }
         
         showing = false
-        cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.view.frame)
+        cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.rootViewController.view.frame)
         
         UIView.animateWithDuration(theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
             self.backgroundColor = self.theme.backgroundColor.colorWithAlphaComponent(0.0)
