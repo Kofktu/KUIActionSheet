@@ -154,24 +154,18 @@ public class KUIActionSheet: UIView {
         return nil
     }
     
+    convenience override init(frame: CGRect) {
+        fatalError("not support")
+    }
+    
     public override func awakeFromNib() {
         super.awakeFromNib()
         
         containerView.layer.cornerRadius = 8.0
         cancelButton.layer.cornerRadius = 8.0
-    }
-    
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        guard let location = touches.first?.locationInView(self) where tapToDismiss else {
-            super.touchesEnded(touches, withEvent: event)
-            return
-        }
         
-        if location.y < CGRectGetMinY(containerView.frame) {
-            dismiss()
-        } else {
-            super.touchesEnded(touches, withEvent: event)
-        }
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
+        addGestureRecognizer(singleTap)
     }
     
     public func show(viewController: UIViewController? = nil, completion: ((Bool) -> Void)? = nil) {
@@ -274,6 +268,11 @@ public class KUIActionSheet: UIView {
         
         lastViewBottom = NSLayoutConstraint(item: visualEffectView, attribute: .Bottom, relatedBy: .Equal, toItem: containerView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
         containerView.addConstraint(lastViewBottom!)
+    }
+    
+    internal func singleTap(gesture: UITapGestureRecognizer) {
+        guard gesture.locationInView(self).y < CGRectGetMinY(containerView.frame) && tapToDismiss else { return }
+        dismiss()
     }
     
     @IBAction func onClose(sender: UIButton) {
