@@ -140,6 +140,7 @@ public class KUIActionSheet: UIView {
     public private(set) var parentViewController: UIViewController!
     
     private var showing: Bool = false
+    private var animating: Bool = false
     private var lastViewBottom: NSLayoutConstraint?
     
     public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
@@ -177,6 +178,7 @@ public class KUIActionSheet: UIView {
         let targetViewController: UIViewController = viewController ?? parentViewController.rootViewController
         
         showing = true
+        animating = true
         backgroundColor = theme.backgroundColor
         targetViewController.view.endEditing(true)
         
@@ -192,9 +194,12 @@ public class KUIActionSheet: UIView {
         
         cancelButtonBottom.constant = initialBottomSpace
         
-        UIView.animateWithDuration(theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+        UIView.animateWithDuration(theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: { 
             self.layoutIfNeeded()
-        }, completion: completion)
+        }) { (finished) in
+            completion?(finished)
+            self.animating = false
+        }
     }
     
     public func dismiss(completion: ((Bool) -> Void)? = nil) {
@@ -204,6 +209,8 @@ public class KUIActionSheet: UIView {
         }
         
         showing = false
+        animating = true
+        userInteractionEnabled = false
         cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.rootViewController.view.frame)
         
         UIView.animateWithDuration(theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
@@ -211,6 +218,7 @@ public class KUIActionSheet: UIView {
             self.layoutIfNeeded()
         }) { (finished) in
             completion?(true)
+            self.animating = false
             self.removeFromSuperview()
         }
     }
@@ -271,6 +279,7 @@ public class KUIActionSheet: UIView {
     }
     
     internal func singleTap(gesture: UITapGestureRecognizer) {
+        guard !animating else { return }
         guard gesture.locationInView(self).y < CGRectGetMinY(containerView.frame) && tapToDismiss else { return }
         dismiss()
     }
