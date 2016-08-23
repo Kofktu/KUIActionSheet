@@ -239,6 +239,7 @@ public class KUIActionSheet: UIView {
         let itemTheme = theme.itemTheme
         
         let button = KUIActionSheetItemButton.button(item)
+        button.titleLabel?.font = itemTheme.font
         button.setTitleColor(item.destructive ? itemTheme.destructiveTitleColor : itemTheme.titleColor, forState: .Normal)
         button.addConstraint(NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: itemTheme.height))
         add(view: button)
