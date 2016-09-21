@@ -107,7 +107,7 @@ extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
     
     public static func viewWithNibName(nibFileName nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
         let views = NSBundle(forClass: self).loadNibNamed(nibFileName, owner: nil, options: nil)
-        for view in views {
+        for view in views! {
             if let view = view as? Self {
                 view.theme = theme
                 view.parentViewController = viewController
@@ -145,7 +145,7 @@ public class KUIActionSheet: UIView {
     
     public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
         let views = NSBundle(forClass: self).loadNibNamed("KUIActionSheet", owner: nil, options: nil)
-        for view in views {
+        for view in views! {
             if let view = view as? KUIActionSheet {
                 view.theme = theme
                 view.parentViewController = viewController
