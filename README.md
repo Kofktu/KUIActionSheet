@@ -72,7 +72,8 @@ Taeun Kim (kofktu), <kofktu@gmail.com>
 ## Requirements
 
 - iOS 8.0+
-- Xcode 7.3
+- Xcode 8.0
+- Swift 2.3
 
 ## License
 
