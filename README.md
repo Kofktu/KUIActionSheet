@@ -6,17 +6,17 @@
 ![alt tag](Screenshot/CustomTheme.png)
 ![alt tag](Screenshot/CustomXib.png)
 
-## Example
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Installation
-
 ## Requirements
 
 - iOS 8.0+
 - Xcode 8.0
 - Swift 3.0 (>= 2.0.0)
 - Swift 2.3 (1.2.0)
+
+## Example
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Installation
 
 #### CocoaPods
 KUIActionSheet is available through [CocoaPods](http://cocoapods.org). To install
