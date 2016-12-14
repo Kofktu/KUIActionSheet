@@ -10,8 +10,8 @@ import UIKit
 
 public protocol KUIActionSheetProtocol {
     var backgroundColor: UIColor { get }
-    var showAnimationDuration: NSTimeInterval { get }
-    var dimissAnimationDuration: NSTimeInterval { get }
+    var showAnimationDuration: TimeInterval { get }
+    var dimissAnimationDuration: TimeInterval { get }
     var blurEffectStyle: UIBlurEffectStyle { get }
     var itemTheme: KUIActionSheetItemTheme { get }
 }
@@ -21,16 +21,16 @@ public struct KUIActionSheetDefault: KUIActionSheetProtocol {
         return UIColor(white: 0.0, alpha: 0.4)
     }
     
-    public var showAnimationDuration: NSTimeInterval {
+    public var showAnimationDuration: TimeInterval {
         return 0.25
     }
     
-    public var dimissAnimationDuration: NSTimeInterval {
+    public var dimissAnimationDuration: TimeInterval {
         return 0.15
     }
     
     public var blurEffectStyle: UIBlurEffectStyle {
-        return .ExtraLight
+        return .extraLight
     }
     
     public var itemTheme: KUIActionSheetItemTheme {
@@ -51,7 +51,7 @@ public struct KUIActionSheetItemDefaultTheme: KUIActionSheetItemTheme {
     }
     
     public var font: UIFont {
-        return UIFont.systemFontOfSize(20.0)
+        return UIFont.systemFont(ofSize: 20.0)
     }
     
     public var titleColor: UIColor {
@@ -86,7 +86,7 @@ extension KUIActionSheetItemViewProtocol where Self: UIView {
             if let sheet = responder as? KUIActionSheet {
                 return sheet
             }
-            responder = responder?.nextResponder()
+            responder = responder?.next
         }
         return nil
     }
@@ -98,16 +98,17 @@ public protocol KUIActionSheetNibLoadableView: class {
 
 extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
     public static var nibName: String {
-        return NSStringFromClass(self).componentsSeparatedByString(".").last!
+        return NSStringFromClass(self).components(separatedBy: ".").last!
     }
     
     public static func viewWithNib(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
         return viewWithNibName(nibFileName: nibName, parentViewController: viewController, theme: theme)
     }
     
-    public static func viewWithNibName(nibFileName nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
-        let views = NSBundle(forClass: self).loadNibNamed(nibFileName, owner: nil, options: nil)
-        for view in views! {
+    public static func viewWithNibName(nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
+        guard let views = Bundle(for: self).loadNibNamed(nibFileName, owner: nil, options: nil) else { return nil }
+        
+        for view in views {
             if let view = view as? Self {
                 view.theme = theme
                 view.parentViewController = viewController
@@ -122,7 +123,7 @@ private extension UIViewController {
     
     var rootViewController: UIViewController {
         var rootViewController: UIViewController = self
-        while let parentViewController = rootViewController.parentViewController {
+        while let parentViewController = rootViewController.parent {
             rootViewController = parentViewController
         }
         return rootViewController
@@ -130,28 +131,30 @@ private extension UIViewController {
     
 }
 
-public class KUIActionSheet: UIView {
+open class KUIActionSheet: UIView {
 
     @IBOutlet public weak var containerView: UIView!
     @IBOutlet public weak var cancelButton: UIButton!
     @IBOutlet public weak var cancelButtonBottom: NSLayoutConstraint!
-    public var theme: KUIActionSheetProtocol!
-    public var tapToDismiss: Bool = true
-    public private(set) var parentViewController: UIViewController!
+    open var theme: KUIActionSheetProtocol!
+    open var tapToDismiss: Bool = true
+    open fileprivate(set) var parentViewController: UIViewController!
     
-    private var showing: Bool = false
-    private var animating: Bool = false
-    private var lastViewBottom: NSLayoutConstraint?
+    fileprivate var showing: Bool = false
+    fileprivate var animating: Bool = false
+    fileprivate var lastViewBottom: NSLayoutConstraint?
     
     public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
-        let views = NSBundle(forClass: self).loadNibNamed("KUIActionSheet", owner: nil, options: nil)
-        for view in views! {
+        guard let views = Bundle(for: self).loadNibNamed("KUIActionSheet", owner: nil, options: nil) else { return nil }
+        
+        for view in views {
             if let view = view as? KUIActionSheet {
                 view.theme = theme
                 view.parentViewController = viewController
                 return view
             }
         }
+        
         return nil
     }
     
@@ -159,7 +162,7 @@ public class KUIActionSheet: UIView {
         fatalError("not support")
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         
         containerView.layer.cornerRadius = 8.0
@@ -169,7 +172,7 @@ public class KUIActionSheet: UIView {
         addGestureRecognizer(singleTap)
     }
     
-    public func show(viewController: UIViewController? = nil, completion: ((Bool) -> Void)? = nil) {
+    open func show(viewController: UIViewController? = nil, completion: ((Bool) -> Void)? = nil) {
         guard !showing else {
             completion?(false)
             return
@@ -184,17 +187,17 @@ public class KUIActionSheet: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         targetViewController.view.addSubview(self)
-        targetViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
-        targetViewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
         
         let initialBottomSpace = cancelButtonBottom.constant
         
-        cancelButtonBottom.constant = -CGRectGetHeight(targetViewController.view.frame)
+        cancelButtonBottom.constant = -targetViewController.view.frame.height
         layoutIfNeeded()
         
         cancelButtonBottom.constant = initialBottomSpace
         
-        UIView.animateWithDuration(theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: { 
+        UIView.animate(withDuration: theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
             self.layoutIfNeeded()
         }) { (finished) in
             completion?(finished)
@@ -202,7 +205,7 @@ public class KUIActionSheet: UIView {
         }
     }
     
-    public func dismiss(completion: ((Bool) -> Void)? = nil) {
+    open func dismiss(completion: ((Bool) -> Void)? = nil) {
         guard showing else {
             completion?(false)
             return
@@ -210,11 +213,11 @@ public class KUIActionSheet: UIView {
         
         showing = false
         animating = true
-        userInteractionEnabled = false
-        cancelButtonBottom.constant = -CGRectGetHeight(parentViewController.rootViewController.view.frame)
+        isUserInteractionEnabled = false
+        cancelButtonBottom.constant = -parentViewController.rootViewController.view.frame.height
         
-        UIView.animateWithDuration(theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
-            self.backgroundColor = self.theme.backgroundColor.colorWithAlphaComponent(0.0)
+        UIView.animate(withDuration: theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+            self.backgroundColor = self.theme.backgroundColor.withAlphaComponent(0.0)
             self.layoutIfNeeded()
         }) { (finished) in
             completion?(true)
@@ -223,42 +226,42 @@ public class KUIActionSheet: UIView {
         }
     }
     
-    public func add(customView view: UIView?) {
+    open func add(customView view: UIView?) {
         if view?.translatesAutoresizingMaskIntoConstraints ?? false {
             view?.translatesAutoresizingMaskIntoConstraints = false
             
             if let view = view {
-                view.addConstraint(NSLayoutConstraint(item: view, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: CGRectGetHeight(view.frame)))
+                view.addConstraint(NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: view.frame.height))
             }
         }
         
         add(view: view)
     }
     
-    public func add(item item: KUIActionSheetItem) {
+    open func add(item: KUIActionSheetItem) {
         let itemTheme = theme.itemTheme
         
         let button = KUIActionSheetItemButton.button(item)
         button.titleLabel?.font = itemTheme.font
-        button.setTitleColor(item.destructive ? itemTheme.destructiveTitleColor : itemTheme.titleColor, forState: .Normal)
-        button.addConstraint(NSLayoutConstraint(item: button, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: itemTheme.height))
+        button.setTitleColor(item.destructive ? itemTheme.destructiveTitleColor : itemTheme.titleColor, for: [])
+        button.addConstraint(NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: itemTheme.height))
         add(view: button)
     }
     
-    private func add(view view: UIView?) {
+    fileprivate func add(view: UIView?) {
         guard let view = view else { return }
         
-        let verticalGap = 1.0 / UIScreen.mainScreen().scale
+        let verticalGap = 1.0 / UIScreen.main.scale
         let lastView = containerView.subviews.last
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: theme.blurEffectStyle))
-        visualEffectView.contentView.backgroundColor = UIColor.clearColor()
+        visualEffectView.contentView.backgroundColor = UIColor.clear
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
         visualEffectView.contentView.addSubview(view)
-        visualEffectView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
-        visualEffectView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
+        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
+        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
         
         containerView.addSubview(visualEffectView)
         
@@ -267,21 +270,21 @@ public class KUIActionSheet: UIView {
             self.lastViewBottom = nil
         }
         
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": visualEffectView]))
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": visualEffectView]))
         
         if let lastView = lastView {
-            containerView.addConstraint(NSLayoutConstraint(item: visualEffectView, attribute: .Top, relatedBy: .Equal, toItem: lastView, attribute: .Bottom, multiplier: 1.0, constant: verticalGap))
+            containerView.addConstraint(NSLayoutConstraint(item: visualEffectView, attribute: .top, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1.0, constant: verticalGap))
         } else {
-            containerView.addConstraint(NSLayoutConstraint(item: visualEffectView, attribute: .Top, relatedBy: .Equal, toItem: containerView, attribute: .Top, multiplier: 1.0, constant: 0.0))
+            containerView.addConstraint(NSLayoutConstraint(item: visualEffectView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1.0, constant: 0.0))
         }
         
-        lastViewBottom = NSLayoutConstraint(item: visualEffectView, attribute: .Bottom, relatedBy: .Equal, toItem: containerView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        lastViewBottom = NSLayoutConstraint(item: visualEffectView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         containerView.addConstraint(lastViewBottom!)
     }
     
-    internal func singleTap(gesture: UITapGestureRecognizer) {
+    internal func singleTap(_ gesture: UITapGestureRecognizer) {
         guard !animating else { return }
-        guard gesture.locationInView(self).y < CGRectGetMinY(containerView.frame) && tapToDismiss else { return }
+        guard gesture.location(in: self).y < containerView.frame.origin.y && tapToDismiss else { return }
         dismiss()
     }
     
@@ -294,21 +297,21 @@ private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol
     
     private var item: KUIActionSheetItem! {
         willSet {
-            removeTarget(self, action: #selector(onPressed(_:)), forControlEvents: .TouchUpInside)
+            removeTarget(self, action: #selector(onPressed(_:)), for: .touchUpInside)
         }
         didSet {
-            setTitle(item.title, forState: .Normal)
-            addTarget(self, action: #selector(onPressed(_:)), forControlEvents: .TouchUpInside)
+            setTitle(item.title, for: [])
+            addTarget(self, action: #selector(onPressed(_:)), for: .touchUpInside)
         }
     }
     
-    class func button(item: KUIActionSheetItem) -> KUIActionSheetItemButton {
-        let button = KUIActionSheetItemButton(type: .Custom)
+    class func button(_ item: KUIActionSheetItem) -> KUIActionSheetItemButton {
+        let button = KUIActionSheetItemButton(type: .custom)
         button.item = item
         return button
     }
     
-    @objc func onPressed(sender: UIButton) {
+    @objc func onPressed(_ sender: UIButton) {
         item.handler?(item)
         actionSheet?.dismiss()
     }

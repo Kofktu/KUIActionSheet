@@ -11,7 +11,7 @@ import KUIActionSheet
 
 class ViewController: UIViewController {
 
-    @IBAction func onShowDefaultActionSheet(sender: UIButton) {
+    @IBAction func onShowDefaultActionSheet(_ sender: UIButton) {
         let actionSheet = KUIActionSheet.view(parentViewController: self)
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
@@ -27,11 +27,11 @@ class ViewController: UIViewController {
         actionSheet?.show()
     }
     
-    @IBAction func onShowDefaultActionSheetWithCustomView(sender: UIButton) {
+    @IBAction func onShowDefaultActionSheetWithCustomView(_ sender: UIButton) {
         let actionSheet = KUIActionSheet.view(parentViewController: self)
         
-        let headerView = HeaderView(frame: CGRectMake(0.0, 0.0, CGRectGetWidth(view.frame), 100.0))
-        headerView.backgroundColor = UIColor.redColor()
+        let headerView = HeaderView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: view.frame.size.width, height: 100.0)))
+        headerView.backgroundColor = UIColor.red
         
 //      with autolayout
 //      headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,11 +51,11 @@ class ViewController: UIViewController {
         actionSheet?.show()
     }
     
-    @IBAction func onShowCustomThemeActionSheet(sender: UIButton) {
+    @IBAction func onShowCustomThemeActionSheet(_ sender: UIButton) {
         let actionSheet = KUIActionSheet.view(parentViewController: self, theme: KUIActionSheetDark())
         
-        actionSheet?.cancelButton.backgroundColor = UIColor.blackColor()
-        actionSheet?.cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        actionSheet?.cancelButton.backgroundColor = UIColor.black
+        actionSheet?.cancelButton.setTitleColor(UIColor.white, for: [])
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
             print(item.title)
@@ -70,7 +70,7 @@ class ViewController: UIViewController {
         actionSheet?.show()
     }
     
-    @IBAction func onShowCustomXibActionSheet(sender: UIButton) {
+    @IBAction func onShowCustomXibActionSheet(_ sender: UIButton) {
         let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
@@ -92,16 +92,16 @@ public struct KUIActionSheetDark: KUIActionSheetProtocol {
         return UIColor(white: 0.0, alpha: 0.4)
     }
     
-    public var showAnimationDuration: NSTimeInterval {
+    public var showAnimationDuration: TimeInterval {
         return 0.25
     }
     
-    public var dimissAnimationDuration: NSTimeInterval {
+    public var dimissAnimationDuration: TimeInterval {
         return 0.15
     }
     
     public var blurEffectStyle: UIBlurEffectStyle {
-        return .Dark
+        return .dark
     }
     
     public var itemTheme: KUIActionSheetItemTheme {
@@ -115,7 +115,7 @@ public struct KUIActionSheetItemDarkTheme: KUIActionSheetItemTheme {
     }
     
     public var font: UIFont {
-        return UIFont.systemFontOfSize(20.0)
+        return UIFont.systemFont(ofSize: 20.0)
     }
     
     public var titleColor: UIColor {
@@ -129,10 +129,11 @@ public struct KUIActionSheetItemDarkTheme: KUIActionSheetItemTheme {
 
 class HeaderView: UIView, KUIActionSheetItemViewProtocol {
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         actionSheet?.dismiss()
     }
+    
 }
 
 class CustomActionSheet: KUIActionSheet, KUIActionSheetNibLoadableView {
