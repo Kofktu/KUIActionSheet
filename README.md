@@ -11,6 +11,13 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
+## Requirements
+
+- iOS 8.0+
+- Xcode 8.0
+- Swift 3.0 (>= 2.0.0)
+- Swift 2.3 (1.2.0)
+
 #### CocoaPods
 KUIActionSheet is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
@@ -68,12 +75,6 @@ public protocol KUIActionSheetItemTheme {
 ## Authors
 
 Taeun Kim (kofktu), <kofktu@gmail.com>
-
-## Requirements
-
-- iOS 8.0+
-- Xcode 8.0
-- Swift 2.3
 
 ## License
 
