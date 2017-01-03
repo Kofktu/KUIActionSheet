@@ -288,7 +288,7 @@ open class KUIActionSheet: UIView {
         dismiss()
     }
     
-    @IBAction func onClose(sender: UIButton) {
+    @IBAction open func onClose(_ sender: UIButton) {
         dismiss()
     }
 }
