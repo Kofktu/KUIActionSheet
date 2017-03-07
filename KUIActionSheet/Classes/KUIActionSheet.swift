@@ -194,14 +194,16 @@ open class KUIActionSheet: UIView {
         
         cancelButtonBottom.constant = -targetViewController.view.frame.height
         layoutIfNeeded()
+        targetViewController.view.layoutIfNeeded()
         
         cancelButtonBottom.constant = initialBottomSpace
         
         UIView.animate(withDuration: theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
             self.layoutIfNeeded()
         }) { (finished) in
-            completion?(finished)
+            self.setAccessibility()
             self.animating = false
+            completion?(finished)
         }
     }
     
@@ -231,6 +233,7 @@ open class KUIActionSheet: UIView {
             view?.translatesAutoresizingMaskIntoConstraints = false
             
             if let view = view {
+                view.layoutIfNeeded()
                 view.addConstraint(NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: view.frame.height))
             }
         }
@@ -280,6 +283,17 @@ open class KUIActionSheet: UIView {
         
         lastViewBottom = NSLayoutConstraint(item: visualEffectView, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         containerView.addConstraint(lastViewBottom!)
+    }
+    
+    fileprivate func setAccessibility() {
+        guard UIAccessibilityIsVoiceOverRunning() else { return }
+        
+        let itemButtons = containerView.subviews.flatMap { (view) -> KUIActionSheetItemButton? in
+            return (view as? UIVisualEffectView)?.contentView.subviews.filter { $0 is KUIActionSheetItemButton }.first as? KUIActionSheetItemButton
+        }
+        
+        accessibilityElements = [itemButtons, cancelButton]
+        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
     }
     
     internal func singleTap(_ gesture: UITapGestureRecognizer) {
