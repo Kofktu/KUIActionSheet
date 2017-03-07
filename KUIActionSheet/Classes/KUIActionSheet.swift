@@ -288,8 +288,8 @@ open class KUIActionSheet: UIView {
     fileprivate func setAccessibility() {
         guard UIAccessibilityIsVoiceOverRunning() else { return }
         
-        let itemButtons = containerView.subviews.flatMap { (view) -> KUIActionSheetItemButton? in
-            return (view as? UIVisualEffectView)?.contentView.subviews.filter { $0 is KUIActionSheetItemButton }.first as? KUIActionSheetItemButton
+        let itemButtons = containerView.subviews.flatMap { (view) -> UIView? in
+            return (view as? UIVisualEffectView)?.contentView.subviews.last
         }
         
         accessibilityElements = [itemButtons, cancelButton]
