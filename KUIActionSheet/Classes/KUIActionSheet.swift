@@ -169,6 +169,7 @@ open class KUIActionSheet: UIView {
         cancelButton.layer.cornerRadius = 8.0
         
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTap(_:)))
+        singleTap.delegate = self
         addGestureRecognizer(singleTap)
     }
     
@@ -305,6 +306,19 @@ open class KUIActionSheet: UIView {
     @IBAction open func onClose(_ sender: UIButton) {
         dismiss()
     }
+}
+
+extension KUIActionSheet: UIGestureRecognizerDelegate {
+    
+    // MARK: - UIGestureRecognizerDelegate
+    open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer.location(in: self).y < containerView.frame.origin.y else {
+            return false
+        }
+        
+        return true
+    }
+    
 }
 
 private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol {
