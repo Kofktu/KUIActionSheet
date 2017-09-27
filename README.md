@@ -1,4 +1,9 @@
 # KUIActionSheet
+
+![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg)
+[![CocoaPods](http://img.shields.io/cocoapods/v/KUIActionSheet.svg?style=flat)](http://cocoapods.org/?q=name%3AKUIActionSheet%20author%3AKofktu)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 > Custom UIActionSheet for Swift
 
 ![alt tag](Screenshot/Default.png)
@@ -9,12 +14,9 @@
 ## Requirements
 
 - iOS 8.0+
-- Xcode 8.0
-- Swift 3.0 (>= 2.0.0)
-- Swift 2.3 (1.2.0)
-
-## Example
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+- Xcode 9.0
+- Swift 4.0
+- Swift 3.0 ([2.0.4](https://github.com/Kofktu/KUIActionSheet/tree/2.0.4))
 
 ## Installation
 
