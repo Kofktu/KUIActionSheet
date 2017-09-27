@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KUIActionSheet"
-  s.version      = "2.0.4"
+  s.version      = "2.5.0"
   s.summary      = "Custom UIActionSheet"
 
   # This description is used to generate tags and improve search results.
