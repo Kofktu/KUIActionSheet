@@ -101,16 +101,18 @@ extension KUIActionSheetNibLoadableView where Self: KUIActionSheet {
         return NSStringFromClass(self).components(separatedBy: ".").last!
     }
     
-    public static func viewWithNib(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
+    public static func viewWithNib(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol? = nil) -> KUIActionSheetNibLoadableView? {
         return viewWithNibName(nibFileName: nibName, parentViewController: viewController, theme: theme)
     }
     
-    public static func viewWithNibName(nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheetNibLoadableView? {
+    public static func viewWithNibName(nibFileName: String,  parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol?) -> KUIActionSheetNibLoadableView? {
         guard let views = Bundle(for: self).loadNibNamed(nibFileName, owner: nil, options: nil) else { return nil }
+        
+        let actionSheetTheme = theme ?? KUIActionSheetDefault()
         
         for view in views {
             if let view = view as? Self {
-                view.theme = theme
+                view.theme = actionSheetTheme
                 view.parentViewController = viewController
                 return view
             }
@@ -144,12 +146,14 @@ open class KUIActionSheet: UIView {
     fileprivate var animating: Bool = false
     fileprivate var lastViewBottom: NSLayoutConstraint?
     
-    public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol = KUIActionSheetDefault()) -> KUIActionSheet? {
+    public class func view(parentViewController viewController: UIViewController, theme: KUIActionSheetProtocol? = nil) -> KUIActionSheet? {
         guard let views = Bundle(for: self).loadNibNamed("KUIActionSheet", owner: nil, options: nil) else { return nil }
+        
+        let actionSheetTheme = theme ?? KUIActionSheetDefault()
         
         for view in views {
             if let view = view as? KUIActionSheet {
-                view.theme = theme
+                view.theme = actionSheetTheme
                 view.parentViewController = viewController
                 return view
             }
@@ -297,7 +301,7 @@ open class KUIActionSheet: UIView {
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
     }
     
-    internal func singleTap(_ gesture: UITapGestureRecognizer) {
+    @objc internal func singleTap(_ gesture: UITapGestureRecognizer) {
         guard !animating else { return }
         guard gesture.location(in: self).y < containerView.frame.origin.y && tapToDismiss else { return }
         dismiss()
