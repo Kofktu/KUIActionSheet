@@ -14,13 +14,13 @@ class ViewController: UIViewController {
     @IBAction func onShowDefaultActionSheet(_ sender: UIButton) {
         let actionSheet = KUIActionSheet.view(parentViewController: self)
         
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
             print(item.title)
         })
         
@@ -38,13 +38,13 @@ class ViewController: UIViewController {
 //      headerView.addConstraint(NSLayoutConstraint(item: headerView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 50.0))
         
         actionSheet?.add(customView: headerView)
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
             print(item.title)
             })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
             print(item.title)
             })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
             print(item.title)
             })
         
@@ -57,13 +57,13 @@ class ViewController: UIViewController {
         actionSheet?.cancelButton.backgroundColor = UIColor.black
         actionSheet?.cancelButton.setTitleColor(UIColor.white, for: [])
         
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
             print(item.title)
         })
         
@@ -73,13 +73,13 @@ class ViewController: UIViewController {
     @IBAction func onShowCustomXibActionSheet(_ sender: UIButton) {
         let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
         
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
             print(item.title)
         })
-        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { [weak self] (item) in
+        actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
             print(item.title)
         })
         
