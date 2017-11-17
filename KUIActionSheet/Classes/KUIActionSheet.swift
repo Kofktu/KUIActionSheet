@@ -63,16 +63,35 @@ public struct KUIActionSheetItemDefaultTheme: KUIActionSheetItemTheme {
     }
 }
 
+public typealias KUIActionSheetItemAsyncTitleTask = (@escaping (String) -> Void) -> Void
+public typealias KUIActionSheetItemHandler = (KUIActionSheetItem) -> Void
+
 public struct KUIActionSheetItem {
-    public let title: String
+    public let title: String?
+    public let asyncTitle: KUIActionSheetItemAsyncTitleTask?
+    public let activityStyle: UIActivityIndicatorViewStyle
     public let destructive: Bool
-    public let handler: ((KUIActionSheetItem) -> Void)?
+    public let handler: KUIActionSheetItemHandler?
     
     public init(
         title: String,
         destructive: Bool = false,
-        handler: ((KUIActionSheetItem) -> Void)?) {
+        handler: KUIActionSheetItemHandler?) {
         self.title = title
+        self.asyncTitle = nil
+        self.activityStyle = .gray
+        self.destructive = destructive
+        self.handler = handler
+    }
+    
+    public init(
+        asyncTitle: @escaping KUIActionSheetItemAsyncTitleTask,
+        activityStyle: UIActivityIndicatorViewStyle = .gray,
+        destructive: Bool = false,
+        handler: KUIActionSheetItemHandler?) {
+        self.title = nil
+        self.asyncTitle = asyncTitle
+        self.activityStyle = activityStyle
         self.destructive = destructive
         self.handler = handler
     }
@@ -327,22 +346,52 @@ extension KUIActionSheet: UIGestureRecognizerDelegate {
 
 private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol {
     
+    private lazy var activityView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        return activityView
+    }()
+    
     private var item: KUIActionSheetItem! {
-        willSet {
-            removeTarget(self, action: #selector(onPressed(_:)), for: .touchUpInside)
-        }
         didSet {
-            setTitle(item.title, for: [])
-            addTarget(self, action: #selector(onPressed(_:)), for: .touchUpInside)
+            updateItem()
         }
     }
     
     class func button(_ item: KUIActionSheetItem) -> KUIActionSheetItemButton {
         let button = KUIActionSheetItemButton(type: .custom)
+        button.initialized()
         button.item = item
         return button
     }
     
+    // MARK: - Private
+    private func initialized() {
+        setupActivityView()
+        addTarget(self, action: #selector(onPressed(_:)), for: .touchUpInside)
+    }
+    
+    private func setupActivityView() {
+        addSubview(activityView)
+        addConstraint(NSLayoutConstraint(item: activityView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        addConstraint(NSLayoutConstraint(item: activityView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+    }
+    
+    private func updateItem() {
+        if let title = item.title {
+            setTitle(title, for: [])
+            activityView.stopAnimating()
+        } else {
+            activityView.activityIndicatorViewStyle = item.activityStyle
+            activityView.startAnimating()
+            item.asyncTitle? { [weak self] title in
+                self?.setTitle(title, for: [])
+                self?.activityView.stopAnimating()
+            }
+        }
+    }
+    
+    // MARK: - Action
     @objc func onPressed(_ sender: UIButton) {
         item.handler?(item)
         actionSheet?.dismiss()
