@@ -15,13 +15,13 @@ class ViewController: UIViewController {
         let actionSheet = KUIActionSheet.view(parentViewController: self)
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         
         actionSheet?.show()
@@ -39,13 +39,13 @@ class ViewController: UIViewController {
         
         actionSheet?.add(customView: headerView)
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
-            print(item.title)
+            print(item)
             })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
-            print(item.title)
+            print(item)
             })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
-            print(item.title)
+            print(item)
             })
         
         actionSheet?.show()
@@ -58,13 +58,13 @@ class ViewController: UIViewController {
         actionSheet?.cancelButton.setTitleColor(UIColor.white, for: [])
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         
         actionSheet?.show()
@@ -74,14 +74,21 @@ class ViewController: UIViewController {
         let actionSheet = CustomActionSheet.actionSheet(parentViewController: self)
         
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴1", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴2", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
         actionSheet?.add(item: KUIActionSheetItem(title: "메뉴3", destructive: false) { (item) in
-            print(item.title)
+            print(item)
         })
+        actionSheet?.add(item: KUIActionSheetItem(asyncTitle: { (completion) -> Void in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                completion("Async Title")
+            })
+        }, handler: { (item) in
+            print(item)
+        }))
         
         actionSheet?.show()
     }
