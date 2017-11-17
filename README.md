@@ -40,6 +40,13 @@ actionSheet?.add(customView: UIView<KUIActionSheetItemViewProtocol>)
 actionSheet?.add(item: KUIActionSheetItem(title: "Menu1", destructive: false) { [weak self] (item) in
   print(item.title)
 })
+actionSheet?.add(item: KUIActionSheetItem(asyncTitle: { (completion) -> Void in
+  DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+    completion("Async Title")
+  })
+}, handler: { (item) in
+  print(item)
+}))
 actionSheet?.show()
 
 ```
