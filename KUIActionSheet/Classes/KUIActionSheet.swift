@@ -317,6 +317,7 @@ open class KUIActionSheet: UIView {
         }
         
         accessibilityElements = [itemButtons, cancelButton]
+        accessibilityViewIsModal = true
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
     }
     
