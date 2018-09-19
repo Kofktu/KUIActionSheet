@@ -15,7 +15,7 @@
 
 - iOS 8.0+
 - Xcode 9.0
-- Swift 4.0
+- Swift 4.2
 - Swift 3.0 ([2.0.4](https://github.com/Kofktu/KUIActionSheet/tree/2.0.4))
 
 ## Installation
@@ -40,6 +40,13 @@ actionSheet?.add(customView: UIView<KUIActionSheetItemViewProtocol>)
 actionSheet?.add(item: KUIActionSheetItem(title: "Menu1", destructive: false) { [weak self] (item) in
   print(item.title)
 })
+actionSheet?.add(item: KUIActionSheetItem(asyncTitle: { (completion) -> Void in
+  DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+    completion("Async Title")
+  })
+}, handler: { (item) in
+  print(item)
+}))
 actionSheet?.show()
 
 ```
