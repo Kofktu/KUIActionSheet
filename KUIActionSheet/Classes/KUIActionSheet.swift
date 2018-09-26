@@ -12,7 +12,7 @@ public protocol KUIActionSheetProtocol {
     var backgroundColor: UIColor { get }
     var showAnimationDuration: TimeInterval { get }
     var dimissAnimationDuration: TimeInterval { get }
-    var blurEffectStyle: UIBlurEffectStyle { get }
+    var blurEffectStyle: UIBlurEffect.Style { get }
     var itemTheme: KUIActionSheetItemTheme { get }
 }
 
@@ -29,7 +29,7 @@ public struct KUIActionSheetDefault: KUIActionSheetProtocol {
         return 0.15
     }
     
-    public var blurEffectStyle: UIBlurEffectStyle {
+    public var blurEffectStyle: UIBlurEffect.Style {
         return .extraLight
     }
     
@@ -69,7 +69,7 @@ public typealias KUIActionSheetItemHandler = (KUIActionSheetItem) -> Void
 public struct KUIActionSheetItem {
     public let title: String?
     public let asyncTitle: KUIActionSheetItemAsyncTitleTask?
-    public let activityStyle: UIActivityIndicatorViewStyle
+    public let activityStyle: UIActivityIndicatorView.Style
     public let destructive: Bool
     public let handler: KUIActionSheetItemHandler?
     
@@ -86,7 +86,7 @@ public struct KUIActionSheetItem {
     
     public init(
         asyncTitle: @escaping KUIActionSheetItemAsyncTitleTask,
-        activityStyle: UIActivityIndicatorViewStyle = .gray,
+        activityStyle: UIActivityIndicatorView.Style = .gray,
         destructive: Bool = false,
         handler: KUIActionSheetItemHandler?) {
         self.title = nil
@@ -211,8 +211,8 @@ open class KUIActionSheet: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         targetViewController.view.addSubview(self)
-        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
-        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
+        targetViewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view": self]))
         
         let initialBottomSpace = cancelButtonBottom.constant
         
@@ -222,7 +222,7 @@ open class KUIActionSheet: UIView {
         
         cancelButtonBottom.constant = initialBottomSpace
         
-        UIView.animate(withDuration: theme.showAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+        UIView.animate(withDuration: theme.showAnimationDuration, delay: 0, options: UIView.AnimationOptions(rawValue: 7 << 16), animations: {
             self.layoutIfNeeded()
         }) { (finished) in
             self.setAccessibility()
@@ -242,7 +242,7 @@ open class KUIActionSheet: UIView {
         isUserInteractionEnabled = false
         cancelButtonBottom.constant = -parentViewController.rootViewController.view.frame.height
         
-        UIView.animate(withDuration: theme.dimissAnimationDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7 << 16), animations: {
+        UIView.animate(withDuration: theme.dimissAnimationDuration, delay: 0, options: UIView.AnimationOptions(rawValue: 7 << 16), animations: {
             self.backgroundColor = self.theme.backgroundColor.withAlphaComponent(0.0)
             self.layoutIfNeeded()
         }) { (finished) in
@@ -287,8 +287,8 @@ open class KUIActionSheet: UIView {
         visualEffectView.contentView.backgroundColor = UIColor.clear
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
         visualEffectView.contentView.addSubview(view)
-        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
-        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
+        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
+        visualEffectView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view": view]))
         
         containerView.addSubview(visualEffectView)
         
@@ -297,7 +297,7 @@ open class KUIActionSheet: UIView {
             self.lastViewBottom = nil
         }
         
-        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view": visualEffectView]))
+        containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: ["view": visualEffectView]))
         
         if let lastView = lastView {
             containerView.addConstraint(NSLayoutConstraint(item: visualEffectView, attribute: .top, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1.0, constant: verticalGap))
@@ -310,15 +310,15 @@ open class KUIActionSheet: UIView {
     }
     
     fileprivate func setAccessibility() {
-        guard UIAccessibilityIsVoiceOverRunning() else { return }
+        guard UIAccessibility.isVoiceOverRunning else { return }
         
-        let itemButtons = containerView.subviews.flatMap { (view) -> UIView? in
+        let itemButtons = containerView.subviews.compactMap { (view) -> UIView? in
             return (view as? UIVisualEffectView)?.contentView.subviews.last
         }
         
         accessibilityElements = [itemButtons, cancelButton]
         accessibilityViewIsModal = true
-        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: self)
     }
     
     @objc internal func singleTap(_ gesture: UITapGestureRecognizer) {
@@ -348,7 +348,7 @@ extension KUIActionSheet: UIGestureRecognizerDelegate {
 private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol {
     
     private lazy var activityView: UIActivityIndicatorView = {
-        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityView = UIActivityIndicatorView(style: .gray)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         return activityView
     }()
@@ -383,7 +383,7 @@ private class KUIActionSheetItemButton: UIButton, KUIActionSheetItemViewProtocol
             setTitle(title, for: [])
             activityView.stopAnimating()
         } else {
-            activityView.activityIndicatorViewStyle = item.activityStyle
+            activityView.style = item.activityStyle
             activityView.startAnimating()
             item.asyncTitle? { [weak self] title in
                 self?.setTitle(title, for: [])

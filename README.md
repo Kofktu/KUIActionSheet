@@ -15,7 +15,7 @@
 
 - iOS 8.0+
 - Xcode 9.0
-- Swift 4.0
+- Swift 4.2
 - Swift 3.0 ([2.0.4](https://github.com/Kofktu/KUIActionSheet/tree/2.0.4))
 
 ## Installation
