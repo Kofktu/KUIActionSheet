@@ -28,9 +28,12 @@
                         <action selector="onClose:" destination="xfO-XN-9w7" eventType="touchUpInside" id="tE1-Kx-pfX"/>
                     </connections>
                 </button>
-                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iI6-sl-5sI">
-                    <rect key="frame" x="10" y="526" width="355" height="0.0"/>
+                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iI6-sl-5sI">
+                    <rect key="frame" x="10" y="593" width="355" height="0.0"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" placeholder="YES" id="aQe-mY-lng"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>

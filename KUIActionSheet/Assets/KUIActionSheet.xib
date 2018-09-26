@@ -28,21 +28,24 @@
                         <action selector="onClose:" destination="iN0-l3-epB" eventType="touchUpInside" id="sfo-eH-a8V"/>
                     </connections>
                 </button>
-                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gp0-gE-pqU">
-                    <rect key="frame" x="10" y="526" width="355" height="0.0"/>
+                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gp0-gE-pqU">
+                    <rect key="frame" x="10" y="593" width="355" height="0.0"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" placeholder="YES" id="lg2-DC-vCP"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="r4Q-2r-Ntx" firstAttribute="bottom" secondItem="7VM-7h-raC" secondAttribute="bottom" constant="9" id="AtH-4o-H6Z"/>
+                <constraint firstItem="QiY-qK-xBO" firstAttribute="bottom" secondItem="7VM-7h-raC" secondAttribute="bottom" constant="9" id="AtH-4o-H6Z"/>
                 <constraint firstItem="Gp0-gE-pqU" firstAttribute="centerX" secondItem="7VM-7h-raC" secondAttribute="centerX" id="B8t-WB-3Qu"/>
                 <constraint firstItem="Gp0-gE-pqU" firstAttribute="width" secondItem="7VM-7h-raC" secondAttribute="width" id="UUU-hE-7Be"/>
                 <constraint firstItem="7VM-7h-raC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="h2y-sK-xsH"/>
                 <constraint firstItem="7VM-7h-raC" firstAttribute="top" secondItem="Gp0-gE-pqU" secondAttribute="bottom" constant="8" id="pbv-W8-9Eq"/>
                 <constraint firstAttribute="trailing" secondItem="7VM-7h-raC" secondAttribute="trailing" constant="10" id="qBU-SW-f8G"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="r4Q-2r-Ntx"/>
+            <viewLayoutGuide key="safeArea" id="QiY-qK-xBO"/>
             <connections>
                 <outlet property="cancelButton" destination="7VM-7h-raC" id="x7h-rf-562"/>
                 <outlet property="cancelButtonBottom" destination="AtH-4o-H6Z" id="710-ks-6c9"/>
