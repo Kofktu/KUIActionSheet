@@ -1,19 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="KUIActionSheet" customModule="KUIActionSheet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7VM-7h-raC">
-                    <rect key="frame" x="10" y="534" width="580" height="57"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="10" y="601" width="355" height="57"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="57" id="qWT-5m-BVd"/>
                     </constraints>
@@ -24,19 +29,20 @@
                     </connections>
                 </button>
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gp0-gE-pqU">
-                    <rect key="frame" x="10" y="526" width="580" height="0.0"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="10" y="526" width="355" height="0.0"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="7VM-7h-raC" secondAttribute="bottom" constant="9" id="AtH-4o-H6Z"/>
+                <constraint firstItem="r4Q-2r-Ntx" firstAttribute="bottom" secondItem="7VM-7h-raC" secondAttribute="bottom" constant="9" id="AtH-4o-H6Z"/>
                 <constraint firstItem="Gp0-gE-pqU" firstAttribute="centerX" secondItem="7VM-7h-raC" secondAttribute="centerX" id="B8t-WB-3Qu"/>
                 <constraint firstItem="Gp0-gE-pqU" firstAttribute="width" secondItem="7VM-7h-raC" secondAttribute="width" id="UUU-hE-7Be"/>
                 <constraint firstItem="7VM-7h-raC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="h2y-sK-xsH"/>
                 <constraint firstItem="7VM-7h-raC" firstAttribute="top" secondItem="Gp0-gE-pqU" secondAttribute="bottom" constant="8" id="pbv-W8-9Eq"/>
                 <constraint firstAttribute="trailing" secondItem="7VM-7h-raC" secondAttribute="trailing" constant="10" id="qBU-SW-f8G"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="r4Q-2r-Ntx"/>
             <connections>
                 <outlet property="cancelButton" destination="7VM-7h-raC" id="x7h-rf-562"/>
                 <outlet property="cancelButtonBottom" destination="AtH-4o-H6Z" id="710-ks-6c9"/>
